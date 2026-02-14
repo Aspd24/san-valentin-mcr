@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>¿Serías mi Valentí?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <!-- Conexión al CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>¿Serías mi Valentí en este desfile negro? 🖤🥀</h1>
+
+    <div class="botones">
+        <button id="si">Sí, siempre 🖤</button>
+        <button id="no">No...</button>
+    </div>
+
+    <div class="mensaje" id="mensaje"></div>
+
+    <!-- MÚSICA: The Ghost of You - MCR -->
+    <audio id="musica" loop preload="auto">
+        <source src="My Chemical Romance The Ghost of You 1080p HQ 320 kbps.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Mensaje de inicio para móvil -->
+    <div class="inicio-movil" id="inicioMovil">
+        <p>Toca la pantalla para comenzar 🖤</p>
+        <p class="pequeno">The Ghost of You - MCR</p>
+    </div>
+
+    <script>
+        const botonNo = document.getElementById("no");
+        const botonSi = document.getElementById("si");
+        const mensaje = document.getElementById("mensaje");
+        const musica = document.getElementById("musica");
+        const inicioMovil = document.getElementById("inicioMovil");
+        
+        // Variable para saber si ya se inició
+        let iniciado = false;
+        
+        // Función para iniciar todo
+        function iniciarExperiencia() {
+            if (iniciado) return;
+            iniciado = true;
+            
+            // Ocultar mensaje de inicio
+            if (inicioMovil) {
+                inicioMovil.style.opacity = "0";
+                setTimeout(() => {
+                    inicioMovil.style.display = "none";
+                }, 500);
+            }
+            
+            // Reproducir música
+            musica.play().catch(error => {
+                console.log("Error reproduciendo música:", error);
+            });
+        }
+        
+        // Detectar cualquier toque en la pantalla (para móvil)
+        document.addEventListener("touchstart", iniciarExperiencia, { once: true });
+        document.addEventListener("click", iniciarExperiencia, { once: true });
+        
+        // Variable para controlar si ya empezó a moverse
+        let botonNoHuyendo = false;
+        let intervaloMovimiento = null;
+
+        // Función para mover el botón NO
+        function moverBotonNo() {
+            if (!botonNoHuyendo) return;
+            
+            const maxX = window.innerWidth - botonNo.offsetWidth - 30;
+            const maxY = window.innerHeight - botonNo.offsetHeight - 30;
+            
+            const x = Math.max(10, Math.min(maxX, Math.random() * maxX));
+            const y = Math.max(10, Math.min(maxY, Math.random() * maxY));
+            
+            botonNo.style.transition = "all 0.2s ease";
+            botonNo.style.left = x + "px";
+            botonNo.style.top = y + "px";
+        }
+
+        // Detector para cuando intentan tocar NO (touch para móvil)
+        function intentarNo(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (!botonNoHuyendo) {
+                // Primera vez que intentan: empieza a huir
+                botonNoHuyendo = true;
+                botonNo.style.transition = "all 0.2s ease";
+                botonNo.style.position = "absolute";
+                
+                // Mostrar mensaje de advertencia
+                mensaje.innerHTML = "¿Segura? El fantasma de nosotros siempre recuerda... 🖤";
+                mensaje.style.color = "#ff6b6b";
+                
+                // Iniciar movimiento constante
+                moverBotonNo();
+                intervaloMovimiento = setInterval(moverBotonNo, 200); // Más rápido en móvil
+                
+                // Cambiar texto del botón
+                botonNo.textContent = "👻";
+            }
+        }
+
+        // Eventos para NO (móvil y desktop)
+        botonNo.addEventListener("touchstart", intentarNo);
+        botonNo.addEventListener("mousedown", intentarNo);
+
+        // Prevenir cualquier clic en NO
+        botonNo.addEventListener("click", function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (botonNoHuyendo) {
+                mensaje.innerHTML = "El fantasma siempre regresa... solo di SÍ 🖤";
+            }
+        });
+
+        // Botón SI
+        botonSi.addEventListener("click", function () {
+            mensaje.innerHTML = "Porque el amor nunca muere… y tú eres mi final feliz 🖤🥀";
+            mensaje.style.color = "white";
+            botonSi.style.transform = "scale(1.3)";
+            botonSi.style.boxShadow = "0 0 40px crimson";
+            
+            // Si el NO estaba huyendo, detenerlo
+            if (intervaloMovimiento) {
+                clearInterval(intervaloMovimiento);
+                botonNo.style.opacity = "0.5";
+                botonNo.style.transition = "all 0.5s";
+                botonNo.style.transform = "scale(0.9)";
+            }
+        });
+
+        // Asegurar posición inicial
+        window.addEventListener("load", function() {
+            botonNo.style.position = "relative";
+            botonNo.style.left = "auto";
+            botonNo.style.top = "auto";
+        });
+
+        // Prevenir zoom con doble toque en móvil
+        document.addEventListener('touchmove', function(e) {
+            if (e.target === botonNo) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+
+</body>
+</html>

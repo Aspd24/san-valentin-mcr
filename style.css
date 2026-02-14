@@ -1,0 +1,178 @@
+/* Fondo oscuro con aura roja */
+body {
+    margin: 0;
+    padding: 15px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: radial-gradient(circle at center, #2b0000 0%, #000000 70%);
+    font-family: 'Georgia', serif;
+    color: white;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Humo rojo animado */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.08) 20%, transparent 60%);
+    animation: smoke 10s infinite alternate ease-in-out;
+    top: -50%;
+    left: -50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+@keyframes smoke {
+    from { transform: translate(-5%, -5%) scale(1); }
+    to { transform: translate(5%, 5%) scale(1.2); }
+}
+
+/* Título */
+h1 {
+    font-size: clamp(24px, 7vw, 40px);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px red, 0 0 20px crimson, 0 0 40px darkred;
+    z-index: 1;
+    animation: flicker 3s infinite;
+    margin: 20px 0;
+    position: relative;
+    max-width: 100%;
+    padding: 0 10px;
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.85; }
+}
+
+/* Contenedor botones */
+.botones {
+    margin: 30px 0;
+    position: relative;
+    min-height: 250px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    z-index: 2;
+    flex-wrap: wrap;
+}
+
+/* Botones base */
+button {
+    padding: 15px 25px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    letter-spacing: 1px;
+    border-radius: 5px;
+    min-width: 140px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+/* Botón SI */
+#si {
+    background: black;
+    color: red;
+    border: 2px solid red;
+    box-shadow: 0 0 15px red;
+    position: relative;
+}
+
+#si:active {
+    background: red;
+    color: black;
+    transform: scale(1.1);
+}
+
+/* Botón NO */
+#no {
+    background: #111;
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0 0 10px white;
+    position: relative;
+    transition: all 0.2s ease;
+    z-index: 10;
+    cursor: pointer;
+    min-width: 80px;
+}
+
+/* Mensaje final */
+.mensaje {
+    margin-top: 20px;
+    font-size: clamp(18px, 5vw, 24px);
+    text-shadow: 0 0 15px red;
+    z-index: 1;
+    padding: 15px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    max-width: 90%;
+    text-align: center;
+    min-height: 80px;
+    transition: all 0.3s ease;
+}
+
+/* Mensaje de inicio para móvil */
+.inicio-movil {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    text-align: center;
+    padding: 20px;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.inicio-movil p {
+    font-size: 24px;
+    color: white;
+    text-shadow: 0 0 20px red;
+    animation: latido 1.5s infinite;
+}
+
+.inicio-movil .pequeno {
+    font-size: 16px;
+    margin-top: 20px;
+    opacity: 0.8;
+}
+
+@keyframes latido {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* Responsive para móviles */
+@media (max-width: 480px) {
+    h1 { margin: 10px 0; }
+    .botones { 
+        min-height: 200px;
+        gap: 10px;
+    }
+    button { 
+        padding: 12px 20px; 
+        font-size: 16px;
+        min-width: 120px;
+    }
+    #no { min-width: 70px; }
+}
